@@ -4,10 +4,38 @@ import videosContent from '../content/videos.md?raw';
 import aboutContent from '../content/about.md?raw';
 
 export const menuItems = [
-  { id: 'home', title: 'Home' },
-  { id: 'blogs', title: 'Blogs' },
-  { id: 'videos', title: 'Videos' },
-  { id: 'about', title: 'About' },
+  {
+    id: 'home',
+    title: 'Home',
+    children: [
+      { id: 'home-overview', title: 'Overview', pageId: 'home' },
+      { id: 'home-start', title: 'Getting Started', pageId: 'home' },
+    ],
+  },
+  {
+    id: 'blogs',
+    title: 'Blogs',
+    children: [
+      { id: 'blogs-library', title: 'Blog Library', pageId: 'blogs' },
+      { id: 'blogs-topics', title: 'Popular Topics', pageId: 'blogs' },
+    ],
+  },
+  {
+    id: 'videos',
+    title: 'Videos',
+    children: [
+      { id: 'videos-library', title: 'Video Center', pageId: 'videos' },
+      { id: 'videos-playlists', title: 'Playlists', pageId: 'videos' },
+    ],
+  },
+  {
+    id: 'about',
+    title: 'About',
+    children: [
+      { id: 'about-story', title: 'About Us', pageId: 'about' },
+      { id: 'about-contact', title: 'Contact', pageId: 'about' },
+    ],
+  },
 ];
 
 export const pages = [
