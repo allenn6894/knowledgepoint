@@ -1,0 +1,57 @@
+export const pyqGroups = [
+  { id: 'ssc', label: 'SSC', count: 13 },
+  { id: 'upsc', label: 'UPSC', count: 15 },
+  { id: 'banking', label: 'Banking', count: 11 },
+  { id: 'railways', label: 'Railways', count: 9 },
+  { id: 'defence', label: 'Defence', count: 6 },
+  { id: 'teaching', label: 'Teaching', count: 4 },
+  { id: 'state-psc', label: 'State PSC', count: 6 },
+];
+
+// Minimal mock records for PYQ table-like list
+export const pyqPapers = [
+  {
+    id: 'ssc-cgl-2024-morning-tier1',
+    group: 'ssc',
+    exam: 'SSC CGL',
+    paper: 'Tier I',
+    year: 2024,
+    shift: 'Morning',
+    type: 'Objective',
+    size: '568 KB',
+    link: 'https://example.com/pyq/ssc-cgl-2024-tier1-morning.pdf',
+  },
+  {
+    id: 'ssc-cgl-2024-afternoon-tier1',
+    group: 'ssc',
+    exam: 'SSC CGL',
+    paper: 'Tier I',
+    year: 2024,
+    shift: 'Afternoon',
+    type: 'Objective',
+    size: '555 KB',
+    link: 'https://example.com/pyq/ssc-cgl-2024-tier1-afternoon.pdf',
+  },
+  {
+    id: 'upsc-prelims-2023',
+    group: 'upsc',
+    exam: 'UPSC Prelims',
+    paper: 'General Studies',
+    year: 2023,
+    shift: 'All',
+    type: 'Objective',
+    size: '1.2 MB',
+    link: 'https://example.com/pyq/upsc-prelims-2023.pdf',
+  },
+  {
+    id: 'bank-po-2024-morning',
+    group: 'banking',
+    exam: 'Bank PO',
+    paper: 'Paper I',
+    year: 2024,
+    shift: 'Morning',
+    type: 'Objective',
+    size: '420 KB',
+    link: 'https://example.com/pyq/bank-po-2024.pdf',
+  },
+];

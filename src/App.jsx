@@ -1,43 +1,54 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { menuItems, pages } from './data/pages';
 import Navbar from './components/Navbar';
 import ContentRenderer from './components/ContentRenderer';
 import CalendarView from './components/CalendarView';
 import ExamDetails from './components/ExamDetails';
+import PyqPage from './components/PyqPage';
 import { calendarEvents, examDetails } from './data/calendarData';
 
+const routeMap = {
+  home: '/',
+  jobs: '/jobs',
+  exams: '/exams',
+  pyq: '/pyq',
+  calendar: '/calendar',
+};
+
 function App() {
-  const [selectedPage, setSelectedPage] = useState(menuItems[0].id);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const currentPageId = useMemo(() => {
+    const path = location.pathname.replace(/^\/|\/$/g, '');
+    const pageId = Object.entries(routeMap).find(([, route]) => route === `/${path || ''}`)?.[0];
+    return pageId ?? 'home';
+  }, [location.pathname]);
+
   const page = useMemo(
-    () => pages.find((item) => item.id === selectedPage) ?? pages[0],
-    [selectedPage]
+    () => pages.find((item) => item.id === currentPageId) ?? pages[0],
+    [currentPageId]
   );
 
   const isHomePage = page.id === 'home';
   const isStandaloneSectionPage = ['jobs', 'exams', 'pyq'].includes(page.id);
 
-  const openExamSection = (slug) => {
-    setSelectedPage('exams');
-    const nextUrl = slug ? `#${slug}` : '#exams';
-    window.history.pushState({}, '', nextUrl);
+  const handleSelectPage = (pageId) => {
+    navigate(routeMap[pageId] ?? '/');
+  };
 
-    window.setTimeout(() => {
-      const target = document.getElementById(slug);
-      if (target) {
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    }, 80);
+  const openExamSection = (slug) => {
+    navigate(slug ? `/exams#${slug}` : '/exams');
   };
 
   useEffect(() => {
-    const hash = window.location.hash.replace('#', '');
+    const hash = location.hash.replace('#', '');
     if (!hash) {
       return;
     }
 
     const matchingExam = examDetails.find((exam) => exam.slug === hash);
     if (matchingExam) {
-      setSelectedPage('exams');
       window.setTimeout(() => {
         const target = document.getElementById(hash);
         if (target) {
@@ -45,26 +56,62 @@ function App() {
         }
       }, 120);
     }
-  }, []);
+  }, [location.hash, location.pathname]);
+
+  const renderContent = () => {
+    if (page.id === 'calendar') {
+      return (
+        <div className="calendar-page">
+          <ContentRenderer source={page.content} />
+          <CalendarView events={calendarEvents} onSelectExam={openExamSection} />
+        </div>
+      );
+    }
+
+    if (page.id === 'exams') {
+      return (
+        <div className="exam-page">
+          <ContentRenderer source={page.content} />
+          <ExamDetails exams={examDetails} />
+        </div>
+      );
+    }
+
+    if (page.id === 'pyq') {
+      return <PyqPage />;
+    }
+
+    if (page.id === 'jobs') {
+      return (
+        <div className="standalone-section-page">
+          <ContentRenderer source={page.content} />
+        </div>
+      );
+    }
+
+    return <ContentRenderer source={page.content} />;
+  };
 
   return (
     <div className="app-shell">
       <header className="app-header">
-        <div className="brand">Knowledge Point</div>
-        <Navbar items={menuItems} activeId={selectedPage} onSelect={setSelectedPage} />
+        <button type="button" className="brand" onClick={() => handleSelectPage('home')}>
+          <img src="/images/logo.svg" alt="Knowledge Point" />
+        </button>
+        <Navbar items={menuItems} activeId={currentPageId} onSelect={handleSelectPage} />
       </header>
 
       <main className="app-main">
         {isHomePage ? (
           <>
-            <section className="hero-card">
+            <section className="hero-card fade-in">
               <div className="hero-copy">
                 <p className="eyebrow">Job • Exam • PYQ Hub</p>
                 <h1>{page.title}</h1>
                 <p>{page.description}</p>
                 <div className="hero-actions">
                   {page.quickLinks?.map((link) => (
-                    <button key={link.pageId} onClick={() => setSelectedPage(link.pageId)}>
+                    <button key={link.pageId} onClick={() => handleSelectPage(link.pageId)}>
                       {link.label}
                     </button>
                   ))}
@@ -89,9 +136,10 @@ function App() {
 
             <section className="resource-grid">
               {page.cards?.map((card) => (
-                <button key={card.pageId} className="resource-card" onClick={() => setSelectedPage(card.pageId)}>
-                  <span className="resource-icon">{card.icon}</span>
+                <button key={card.pageId} className="resource-card fade-in" onClick={() => handleSelectPage(card.pageId)}>
+                  <span className="resource-art" />
                   <div>
+                    <span className="resource-icon">{card.icon}</span>
                     <h3>{card.title}</h3>
                     <p>{card.description}</p>
                   </div>
@@ -100,36 +148,18 @@ function App() {
             </section>
           </>
         ) : isStandaloneSectionPage ? (
-          <section className="page-heading standalone-page-heading">
+          <section className="page-heading standalone-page-heading fade-in">
             <h1>{page.title}</h1>
             <p>{page.description}</p>
           </section>
         ) : (
-          <section className="page-heading">
+          <section className="page-heading fade-in">
             <h1>{page.title}</h1>
             <p>{page.description}</p>
           </section>
         )}
 
-        <section className="content-card">
-          {page.id === 'calendar' ? (
-            <div className="calendar-page">
-              <ContentRenderer source={page.content} />
-              <CalendarView events={calendarEvents} onSelectExam={openExamSection} />
-            </div>
-          ) : page.id === 'exams' ? (
-            <div className="exam-page">
-              <ContentRenderer source={page.content} />
-              <ExamDetails exams={examDetails} />
-            </div>
-          ) : page.id === 'jobs' || page.id === 'pyq' ? (
-            <div className="standalone-section-page">
-              <ContentRenderer source={page.content} />
-            </div>
-          ) : (
-            <ContentRenderer source={page.content} />
-          )}
-        </section>
+        <section className="content-card">{renderContent()}</section>
       </main>
 
       <footer className="app-footer">
