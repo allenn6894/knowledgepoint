@@ -1,7 +1,8 @@
 import homeContent from '../content/home.md?raw';
-import blogsContent from '../content/blogs.md?raw';
-import videosContent from '../content/videos.md?raw';
-import aboutContent from '../content/about.md?raw';
+import jobsContent from '../content/jobs.md?raw';
+import examsContent from '../content/exams.md?raw';
+import pyqContent from '../content/pyq.md?raw';
+import calendarContent from '../content/calendar.md?raw';
 
 export const menuItems = [
   {
@@ -13,27 +14,34 @@ export const menuItems = [
     ],
   },
   {
-    id: 'blogs',
-    title: 'Blogs',
+    id: 'jobs',
+    title: 'Jobs',
     children: [
-      { id: 'blogs-library', title: 'Blog Library', pageId: 'blogs' },
-      { id: 'blogs-topics', title: 'Popular Topics', pageId: 'blogs' },
+      { id: 'jobs-opportunities', title: 'Opportunities', pageId: 'jobs' },
+      { id: 'jobs-guidance', title: 'Guidance', pageId: 'jobs' },
     ],
   },
   {
-    id: 'videos',
-    title: 'Videos',
+    id: 'exams',
+    title: 'Exams',
     children: [
-      { id: 'videos-library', title: 'Video Center', pageId: 'videos' },
-      { id: 'videos-playlists', title: 'Playlists', pageId: 'videos' },
+      { id: 'exams-upcoming', title: 'Upcoming Exams', pageId: 'exams' },
+      { id: 'exams-prep', title: 'Preparation Tips', pageId: 'exams' },
     ],
   },
   {
-    id: 'about',
-    title: 'About',
+    id: 'pyq',
+    title: 'PYQ',
     children: [
-      { id: 'about-story', title: 'About Us', pageId: 'about' },
-      { id: 'about-contact', title: 'Contact', pageId: 'about' },
+      { id: 'pyq-papers', title: 'Previous Papers', pageId: 'pyq' },
+      { id: 'pyq-solutions', title: 'Solutions', pageId: 'pyq' },
+    ],
+  },
+  {
+    id: 'calendar',
+    title: 'Calendar',
+    children: [
+      { id: 'calendar-view', title: 'View Calendar', pageId: 'calendar' },
     ],
   },
 ];
@@ -42,25 +50,56 @@ export const pages = [
   {
     id: 'home',
     title: 'Welcome to Knowledge Point',
-    description: 'A flexible frontend template for blogs, videos, and learning resources.',
+    description: 'A flexible frontend template for learning resources, career updates, and exam support.',
     content: homeContent,
+    quickLinks: [
+      { label: 'Explore Jobs', pageId: 'jobs' },
+      { label: 'View Exams', pageId: 'exams' },
+      { label: 'Check PYQ', pageId: 'pyq' },
+    ],
+    cards: [
+      {
+        title: 'Jobs',
+        description: 'Find career opportunities, guides, and recruitment updates.',
+        pageId: 'jobs',
+        icon: '💼',
+      },
+      {
+        title: 'Exams',
+        description: 'Discover upcoming exams, dates, and preparation tips.',
+        pageId: 'exams',
+        icon: '📝',
+      },
+      {
+        title: 'PYQ',
+        description: 'Access previous year questions and solutions with ease.',
+        pageId: 'pyq',
+        icon: '📚',
+      },
+    ],
   },
   {
-    id: 'blogs',
-    title: 'Knowledge Blogs',
-    description: 'Browse and manage your latest knowledge posts in markdown.',
-    content: blogsContent,
+    id: 'jobs',
+    title: 'Jobs',
+    description: 'Browse job-related resources, opportunities, and guidance.',
+    content: jobsContent,
   },
   {
-    id: 'videos',
-    title: 'Video Resources',
-    description: 'Curated video links for quick learning and reference.',
-    content: videosContent,
+    id: 'exams',
+    title: 'Exams',
+    description: 'Explore exam notifications, preparation tips, and related material.',
+    content: examsContent,
   },
   {
-    id: 'about',
-    title: 'About Knowledge Point',
-    description: 'A generic frontend shell for knowledge-sharing websites.',
-    content: aboutContent,
+    id: 'pyq',
+    title: 'PYQ',
+    description: 'Access previous year questions and solutions for revision.',
+    content: pyqContent,
+  },
+  {
+    id: 'calendar',
+    title: 'Calendar',
+    description: 'Review upcoming exams and important dates in a calendar view.',
+    content: calendarContent,
   },
 ];
