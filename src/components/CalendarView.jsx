@@ -44,20 +44,6 @@ function CalendarView({ events, onSelectExam }) {
           }}
         />
       </div>
-
-      <div className="calendar-list">
-        <h3>Upcoming events</h3>
-        {events.map((event) => (
-          <button key={event.id} type="button" className="calendar-list-item" onClick={() => onSelectExam(event.slug)}>
-            <div>
-              <span className="calendar-date">{event.start}</span>
-              <strong>{event.title}</strong>
-              <p>{event.description}</p>
-            </div>
-            <span className="calendar-link">View section ↗</span>
-          </button>
-        ))}
-      </div>
     </div>
   );
 }

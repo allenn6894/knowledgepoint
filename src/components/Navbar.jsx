@@ -8,6 +8,10 @@ function Navbar({ items, activeId, onSelect }) {
     setOpenMenu(null);
   };
 
+  const toggleMenu = (itemId) => {
+    setOpenMenu((current) => (current === itemId ? null : itemId));
+  };
+
   return (
     <nav className="nav-menu">
       {items.map((item) => {
@@ -15,17 +19,12 @@ function Navbar({ items, activeId, onSelect }) {
         const isActive = item.id === activeId || item.children?.some((child) => child.pageId === activeId);
 
         return (
-          <div
-            key={item.id}
-            className={`nav-item ${isActive ? 'active' : ''}`}
-            onMouseEnter={() => hasChildren && setOpenMenu(item.id)}
-            onMouseLeave={() => hasChildren && setOpenMenu(null)}
-          >
+          <div key={item.id} className={`nav-item ${isActive ? 'active' : ''}`}>
             <button
               className={isActive ? 'nav-button active' : 'nav-button'}
               onClick={() => {
                 if (hasChildren) {
-                  setOpenMenu(openMenu === item.id ? null : item.id);
+                  toggleMenu(item.id);
                 } else {
                   handleSelect(item.id);
                 }
