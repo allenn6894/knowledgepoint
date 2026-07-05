@@ -6,6 +6,7 @@ import ContentRenderer from './components/ContentRenderer';
 import CalendarView from './components/CalendarView';
 import ExamDetails from './components/ExamDetails';
 import PyqPage from './components/PyqPage';
+import SideRail from './components/SideRail';
 import { calendarEvents, examDetails } from './data/calendarData';
 
 const routeMap = {
@@ -92,6 +93,18 @@ function App() {
     return <ContentRenderer source={page.content} />;
   };
 
+  const notifications = [
+    { id: 1, tag: 'New', title: 'Exam schedule updated', description: 'Important dates added for upcoming tests.' },
+    { id: 2, tag: 'Alert', title: 'Job drive announced', description: 'Apply before the next deadline.' },
+    { id: 3, tag: 'Tip', title: 'PYQ set released', description: 'Fresh practice sets are now available.' },
+  ];
+
+  const results = [
+    { id: 1, tag: 'Result', title: 'Recruitment shortlist', description: 'Check the latest selection updates.' },
+    { id: 2, tag: 'Status', title: 'Admit card ready', description: 'Download your hall ticket here.' },
+    { id: 3, tag: 'Update', title: 'Result declared', description: 'Recent evaluation outcomes are live.' },
+  ];
+
   return (
     <div className="app-shell">
       <header className="app-header">
@@ -102,64 +115,72 @@ function App() {
       </header>
 
       <main className="app-main">
-        {isHomePage ? (
-          <>
-            <section className="hero-card fade-in">
-              <div className="hero-copy">
-                <p className="eyebrow">Job • Exam • PYQ Hub</p>
-                <h1>{page.title}</h1>
-                <p>{page.description}</p>
-                <div className="hero-actions">
-                  {page.quickLinks?.map((link) => (
-                    <button key={link.pageId} onClick={() => handleSelectPage(link.pageId)}>
-                      {link.label}
+        <div className="app-content-grid">
+          <SideRail title="Latest Notifications" items={notifications} tone="notifications" />
+
+          <div className="page-center">
+            {isHomePage ? (
+              <>
+                <section className="hero-card fade-in">
+                  <div className="hero-copy">
+                    <p className="eyebrow">Job • Exam • PYQ Hub</p>
+                    <h1>{page.title}</h1>
+                    <p>{page.description}</p>
+                    <div className="hero-actions">
+                      {page.quickLinks?.map((link) => (
+                        <button key={link.pageId} onClick={() => handleSelectPage(link.pageId)}>
+                          {link.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="hero-stats">
+                    <div className="stat-box">
+                      <strong>4+</strong>
+                      <span>Sections</span>
+                    </div>
+                    <div className="stat-box">
+                      <strong>Live</strong>
+                      <span>Career Updates</span>
+                    </div>
+                    <div className="stat-box">
+                      <strong>Easy</strong>
+                      <span>Navigation</span>
+                    </div>
+                  </div>
+                </section>
+
+                <section className="resource-grid">
+                  {page.cards?.map((card) => (
+                    <button key={card.pageId} className="resource-card fade-in" onClick={() => handleSelectPage(card.pageId)}>
+                      <span className="resource-art" />
+                      <div>
+                        <span className="resource-icon">{card.icon}</span>
+                        <h3>{card.title}</h3>
+                        <p>{card.description}</p>
+                      </div>
                     </button>
                   ))}
-                </div>
-              </div>
+                </section>
+              </>
+            ) : isStandaloneSectionPage ? (
+              <section className="page-heading standalone-page-heading fade-in">
+                <h1>{page.title}</h1>
+                <p>{page.description}</p>
+              </section>
+            ) : (
+              <section className="page-heading fade-in">
+                <h1>{page.title}</h1>
+                <p>{page.description}</p>
+              </section>
+            )}
 
-              <div className="hero-stats">
-                <div className="stat-box">
-                  <strong>4+</strong>
-                  <span>Sections</span>
-                </div>
-                <div className="stat-box">
-                  <strong>Live</strong>
-                  <span>Career Updates</span>
-                </div>
-                <div className="stat-box">
-                  <strong>Easy</strong>
-                  <span>Navigation</span>
-                </div>
-              </div>
-            </section>
+            <section className="content-card">{renderContent()}</section>
+          </div>
 
-            <section className="resource-grid">
-              {page.cards?.map((card) => (
-                <button key={card.pageId} className="resource-card fade-in" onClick={() => handleSelectPage(card.pageId)}>
-                  <span className="resource-art" />
-                  <div>
-                    <span className="resource-icon">{card.icon}</span>
-                    <h3>{card.title}</h3>
-                    <p>{card.description}</p>
-                  </div>
-                </button>
-              ))}
-            </section>
-          </>
-        ) : isStandaloneSectionPage ? (
-          <section className="page-heading standalone-page-heading fade-in">
-            <h1>{page.title}</h1>
-            <p>{page.description}</p>
-          </section>
-        ) : (
-          <section className="page-heading fade-in">
-            <h1>{page.title}</h1>
-            <p>{page.description}</p>
-          </section>
-        )}
-
-        <section className="content-card">{renderContent()}</section>
+          <SideRail title="Latest Results" items={results} tone="results" />
+        </div>
       </main>
 
       <footer className="app-footer">
