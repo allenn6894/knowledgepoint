@@ -8,11 +8,20 @@ import ExamDetails from './components/ExamDetails';
 import PyqPage from './components/PyqPage';
 import SideRail from './components/SideRail';
 import { calendarEvents, examDetails } from './data/calendarData';
+import { notifications } from './data/notifications';
+import { results } from './data/results';
+import ContentIndex from './components/ContentIndex';
 
 const routeMap = {
   home: '/',
   jobs: '/jobs',
   exams: '/exams',
+  banking: '/exams/banking',
+  admin: '/exams/admin',
+  engineering: '/exams/engineering',
+  medical: '/exams/medical',
+  'admin-ssc-cgl-2026': '/exams/admin/ssc-cgl-2026',
+  'admin-state-service-2026': '/exams/admin/state-service-2026',
   pyq: '/pyq',
   calendar: '/calendar',
 };
@@ -32,7 +41,7 @@ function App() {
   );
 
   const isHomePage = page.id === 'home';
-  const isStandaloneSectionPage = ['jobs', 'exams', 'pyq'].includes(page.id);
+  const isStandaloneSectionPage = ['jobs', 'exams', 'pyq', 'banking', 'admin', 'engineering', 'medical'].includes(page.id);
 
   const handleSelectPage = (pageId) => {
     navigate(routeMap[pageId] ?? '/');
@@ -48,15 +57,23 @@ function App() {
       return;
     }
 
-    const matchingExam = examDetails.find((exam) => exam.slug === hash);
-    if (matchingExam) {
-      window.setTimeout(() => {
-        const target = document.getElementById(hash);
-        if (target) {
-          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // Try to scroll to an element with the matching id for any page.
+    window.setTimeout(() => {
+      const target = document.getElementById(hash);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        return;
+      }
+
+      // Fallback: if it's an exam detail slug, try to find it in examDetails
+      const matchingExam = examDetails.find((exam) => exam.slug === hash);
+      if (matchingExam) {
+        const fallback = document.getElementById(hash);
+        if (fallback) {
+          fallback.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
-      }, 120);
-    }
+      }
+    }, 120);
   }, [location.hash, location.pathname]);
 
   const renderContent = () => {
@@ -93,18 +110,6 @@ function App() {
     return <ContentRenderer source={page.content} />;
   };
 
-  const notifications = [
-    { id: 1, tag: 'New', title: 'Exam schedule updated', description: 'Important dates added for upcoming tests.' },
-    { id: 2, tag: 'Alert', title: 'Job drive announced', description: 'Apply before the next deadline.' },
-    { id: 3, tag: 'Tip', title: 'PYQ set released', description: 'Fresh practice sets are now available.' },
-  ];
-
-  const results = [
-    { id: 1, tag: 'Result', title: 'Recruitment shortlist', description: 'Check the latest selection updates.' },
-    { id: 2, tag: 'Status', title: 'Admit card ready', description: 'Download your hall ticket here.' },
-    { id: 3, tag: 'Update', title: 'Result declared', description: 'Recent evaluation outcomes are live.' },
-  ];
-
   return (
     <div className="app-shell">
       <header className="app-header">
@@ -116,7 +121,14 @@ function App() {
 
       <main className="app-main">
         <div className="app-content-grid">
-          <SideRail title="Latest Notifications" items={notifications} tone="notifications" />
+          <aside className="left-column">
+            <SideRail title="Latest Notifications" items={notifications} tone="notifications" />
+            {location.pathname.startsWith('/exams') && (
+              <div className="index-card">
+                <ContentIndex />
+              </div>
+            )}
+          </aside>
 
           <div className="page-center">
             {isHomePage ? (

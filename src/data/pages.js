@@ -3,6 +3,12 @@ import jobsContent from '../content/jobs.md?raw';
 import examsContent from '../content/exams.md?raw';
 import pyqContent from '../content/pyq.md?raw';
 import calendarContent from '../content/calendar.md?raw';
+import bankingContent from '../content/banking.md?raw';
+import adminContent from '../content/admin.md?raw';
+import engineeringContent from '../content/engineering.md?raw';
+import medicalContent from '../content/medical.md?raw';
+import sscCgl2026Content from '../content/exams/ssc-cgl-2026.mdx';
+import stateService2026 from '../content/exams/state-service-2026.md?raw';
 
 export const menuItems = [
   {
@@ -27,6 +33,10 @@ export const menuItems = [
     children: [
       { id: 'exams-upcoming', title: 'Upcoming Exams', pageId: 'exams' },
       { id: 'exams-prep', title: 'Preparation Tips', pageId: 'exams' },
+      { id: 'exams-banking', title: 'Banking', pageId: 'banking' },
+      { id: 'exams-admin', title: 'Admin', pageId: 'admin' },
+      { id: 'exams-engineering', title: 'Engineering', pageId: 'engineering' },
+      { id: 'exams-medical', title: 'Medical', pageId: 'medical' },
     ],
   },
   {
@@ -101,5 +111,41 @@ export const pages = [
     title: 'Calendar',
     description: 'Review upcoming exams and important dates in a calendar view.',
     content: calendarContent,
+  },
+  {
+    id: 'banking',
+    title: 'Banking Exams',
+    description: 'Explore banking exam resources, notifications, and preparation support.',
+    content: bankingContent,
+  },
+  {
+    id: 'admin',
+    title: 'Administrative Exams',
+    description: 'Discover administrative and civil service exam updates and study resources.',
+    content: adminContent,
+  },
+  {
+    id: 'engineering',
+    title: 'Engineering Exams',
+    description: 'Track engineering entrance exam information and preparation guidance.',
+    content: engineeringContent,
+  },
+  {
+    id: 'medical',
+    title: 'Medical Exams',
+    description: 'Browse medical exam preparation notes, updates, and revision material.',
+    content: medicalContent,
+  },
+  {
+    id: 'admin-ssc-cgl-2026',
+    title: 'SSC CGL 2026',
+    description: 'Staff Selection Commission Combined Graduate Level Examination 2026 - important dates and resources.',
+    content: sscCgl2026Content,
+  },
+  {
+    id: 'admin-state-service-2026',
+    title: 'State Service 2026',
+    description: 'State Public Service Commission exams and updates for 2026.',
+    content: stateService2026,
   },
 ];
