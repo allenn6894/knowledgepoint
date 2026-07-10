@@ -1,28 +1,19 @@
-import { isValidElement } from 'react';
+import { isValidElement, useRef } from 'react';
 import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { MDXProvider } from '@mdx-js/react';
-import slugify from '../utils/slugify';
-
-function HeadingFactory(Tag) {
-  return ({ node, ...props }) => {
-    const text = Array.isArray(props.children) ? props.children.join('') : props.children;
-    const id = slugify(text);
-    return <Tag id={id} {...props} />;
-  };
-}
-
-const mdxComponents = {
-  h1: HeadingFactory('h1'),
-  h2: HeadingFactory('h2'),
-  h3: HeadingFactory('h3'),
-  h4: HeadingFactory('h4'),
-};
+import { mdxComponents } from './mdx';
+import rehypeSectionize from '../utils/rehypeSectionize';
+import useSearchHighlight from '../hooks/useSearchHighlight';
 
 function ContentRenderer({ source }) {
+  const articleRef = useRef(null);
+  useSearchHighlight(articleRef, [source]);
+
   if (typeof source === 'function' || isValidElement(source)) {
     const MdxComponent = source;
     return (
-      <article className="content-body">
+      <article id="article-content" ref={articleRef} className="prose prose-sm prose-slate max-w-none dark:prose-invert">
         <MDXProvider components={mdxComponents}>
           {typeof source === 'function' ? <MdxComponent /> : source}
         </MDXProvider>
@@ -31,10 +22,8 @@ function ContentRenderer({ source }) {
   }
 
   return (
-    <article className="content-body">
-      <ReactMarkdown
-        components={mdxComponents}
-      >
+    <article id="article-content" ref={articleRef} className="prose prose-sm prose-slate max-w-none dark:prose-invert">
+      <ReactMarkdown components={mdxComponents} remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeSectionize]}>
         {source ?? ''}
       </ReactMarkdown>
     </article>
