@@ -9,6 +9,7 @@ import CalendarView from './components/CalendarView';
 import ExamDetails from './components/ExamDetails';
 import PyqPage from './components/PyqPage';
 import ResultsList from './components/ResultsList';
+import HeroCarousel from './components/HeroCarousel';
 import SideRail from './components/SideRail';
 import Breadcrumbs from './components/Breadcrumbs';
 import TableOfContents from './components/TableOfContents';
@@ -163,22 +164,7 @@ function App() {
               <>
                 <section className="animate-fade-in relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 via-brand-800 to-brand-600 p-6 text-white shadow-soft sm:p-10">
                   <div className="relative z-10 grid grid-cols-1 gap-8 lg:grid-cols-[1.5fr_1fr]">
-                    <div>
-                      <p className="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-white/80">Job · Exam · PYQ Hub</p>
-                      <h1 className="mb-3 text-3xl font-extrabold tracking-tight sm:text-4xl lg:text-5xl">{page.title}</h1>
-                      <p className="max-w-xl text-base leading-relaxed text-white/90">{page.description}</p>
-                      <div className="mt-6 flex flex-wrap gap-3">
-                        {page.quickLinks?.map((link) => (
-                          <button
-                            key={link.pageId}
-                            onClick={() => handleSelectPage(link.pageId)}
-                            className="rounded-full bg-white px-5 py-2.5 text-sm font-bold text-brand-700 shadow-card transition-transform hover:-translate-y-0.5"
-                          >
-                            {link.label}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
+                    <HeroCarousel slides={page.heroSlides} onSelect={handleSelectPage} />
 
                     <div className="flex flex-wrap gap-3 self-center sm:flex-nowrap">
                       <div className="flex min-w-[100px] flex-1 flex-col justify-center rounded-2xl border border-white/15 bg-white/10 p-4 backdrop-blur">
